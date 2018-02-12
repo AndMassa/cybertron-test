@@ -58,24 +58,28 @@ export default function() {
   const ex1 =
     'Use map to transform the list of auto models to uppercase the first letter of each word'
   const exercise1 = _ => {
-    return []
+    return cars.map(x => capitalizeWords(x.model))
   }
 
   const ex2 = 'Use filter to return a list of cars made between 2001-2004'
   const exercise2 = _ => {
-    return []
+    return filter(x => x.year >= 2001 && x.year <= 2004, cars)
   }
 
   const ex3 =
     'Use reduce to count the number of cars that were made in the 2000s'
   const exercise3 = _ => {
-    return 0
+    return reduce((acc, x) => x.year >= 2000 && x.year <= 2018 ? acc + 1 : acc, 0, cars)
   }
 
   const ex4 =
     'Use map, filter and reduce with compose to return the price of the the most expensive car from the 2000s '
   const exercise4 = _ => {
-    return 0
+    return compose(
+      reduce((acc, x) => acc > x ? acc : x, 0),
+      map(x => x.salesPrice),
+      filter(x => x.year >= 2000)
+    )(cars)
   }
 
   const ex5 = `Use map to transform the salesPrice to USD currency format (ex: $400,000.00)
@@ -83,13 +87,19 @@ export default function() {
     ** Hint: Check MDN for the toLocaleString method on the Number Object **
     `
   const exercise5 = _ => {
-    return []
-  }
+      return map(p => p.salesPrice.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }), cars)
+    }
 
   const ex6 = `Use compose and filter to return cars with V8s, map over them and return the names of the cars with the first letter capitalized.`
 
   const exercise6 = _ => {
-    return []
+    return compose(
+      map(x => capitalizeWords(x.model)),
+      filter(x => x.engine === 'V8')
+    )(cars)
   }
 
   /* tests to validate exercises go here */
